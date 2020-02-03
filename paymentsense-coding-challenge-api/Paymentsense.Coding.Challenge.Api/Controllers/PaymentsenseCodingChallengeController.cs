@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Paymentsense.Coding.Challenge.Api.Services;
 
 namespace Paymentsense.Coding.Challenge.Api.Controllers
 {
@@ -6,10 +9,19 @@ namespace Paymentsense.Coding.Challenge.Api.Controllers
     [Route("[controller]")]
     public class PaymentsenseCodingChallengeController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<string> Get()
+        private ICountriesService _countriesService;
+
+        public PaymentsenseCodingChallengeController (ICountriesService countriesService)
         {
-            return Ok("Paymentsense Coding Challenge!");
+            _countriesService = countriesService ?? throw new ArgumentNullException(nameof(countriesService));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<string>> Get()
+        {
+            var dummy = await _countriesService.GetCountries();
+
+            return Ok(dummy);
         }
     }
 }
