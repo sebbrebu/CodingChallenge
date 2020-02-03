@@ -11,6 +11,9 @@ namespace Paymentsense.Coding.Challenge.Api.Services
 {
     public class CountriesService : ICountriesService
     {
+        private const string AllCountriesEndpoint = "https://restcountries.eu/rest/v2/all";
+        private const string CountryByNameEndpoint = "https://restcountries.eu/rest/v2/name/";
+
         private const string CountriesCacheKey = "countries-cache-key";
 
         private readonly IHttpClientFactory _clientFactory;
@@ -31,7 +34,7 @@ namespace Paymentsense.Coding.Challenge.Api.Services
 
             IEnumerable<Country> countries;
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://restcountries.eu/rest/v2/all");
+            var request = new HttpRequestMessage(HttpMethod.Get, AllCountriesEndpoint);
 
             var client = _clientFactory.CreateClient();
 
@@ -51,6 +54,29 @@ namespace Paymentsense.Coding.Challenge.Api.Services
             }
 
             return countries;
+        }
+
+        public async Task<CountryDetails> GetCountryByName(string name)
+        {
+            IEnumerable<CountryDetails> countryDetails;
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{CountryByNameEndpoint}{name}?fullText=true");
+
+            var client = _clientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                countryDetails = JsonConvert.DeserializeObject<IEnumerable<CountryDetails>>(responseContent);               
+            }
+            else
+            {
+                countryDetails = null;
+            }
+
+            return countryDetails.FirstOrDefault();
         }
     }
 }

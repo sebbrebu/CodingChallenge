@@ -14,7 +14,6 @@ export class CountryListComponent {
     constructor(private paymentsenseCodingChallengeApiService: PaymentsenseCodingChallengeApiService) {        
         this.paymentsenseCodingChallengeApiService.getCountries().subscribe(result => { 
             this.countries = result;
-            console.log(this.countries);
         });
     }    
 }
