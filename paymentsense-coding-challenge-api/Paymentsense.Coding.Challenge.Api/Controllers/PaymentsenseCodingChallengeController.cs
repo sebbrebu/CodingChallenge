@@ -9,7 +9,7 @@ namespace Paymentsense.Coding.Challenge.Api.Controllers
     [Route("[controller]")]
     public class PaymentsenseCodingChallengeController : ControllerBase
     {
-        private ICountriesService _countriesService;
+        private readonly ICountriesService _countriesService;
 
         public PaymentsenseCodingChallengeController (ICountriesService countriesService)
         {

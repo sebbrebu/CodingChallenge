@@ -31,6 +31,7 @@ namespace Paymentsense.Coding.Challenge.Api
                 });
             });
 
+            services.AddMemoryCache();
             services.AddHttpClient();
             services.AddScoped<ICountriesService, CountriesService>();
         }

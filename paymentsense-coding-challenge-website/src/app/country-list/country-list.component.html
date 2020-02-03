@@ -1,0 +1,10 @@
+<h2>Countries</h2>
+
+<ul>
+    <li *ngFor="let country of countries | paginate: { itemsPerPage: 10, currentPage: p}"> {{country.name}}
+    <img src={{country.flag}} height="10px"/> 
+</ul>
+
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+

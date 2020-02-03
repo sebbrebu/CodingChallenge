@@ -11,4 +11,8 @@ export class PaymentsenseCodingChallengeApiService {
   public getHealth(): Observable<string> {
     return this.httpClient.get('https://localhost:5001/health', { responseType: 'text' });
   }
+
+  public getCountries(): Observable<Object> {
+    return this.httpClient.get('https://localhost:5001/PaymentsenseCodingChallenge');
+  }
 }
