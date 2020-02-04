@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Paymentsense.Coding.Challenge.Api.Services;
+using Paymentsense.Coding.Challenge.Api.Models.Configuration;
 
 namespace Paymentsense.Coding.Challenge.Api
 {
@@ -34,6 +35,8 @@ namespace Paymentsense.Coding.Challenge.Api
             services.AddMemoryCache();
             services.AddHttpClient();
             services.AddScoped<ICountriesService, CountriesService>();
+
+            services.Configure<CountriesApiOptions>(Configuration.GetSection("CountriesApi"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -21,7 +21,7 @@ namespace Paymentsense.Coding.Challenge.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> Get()
+        public async Task<ActionResult> Get()
         {
             var countries = await _countriesService.GetCountries();
 
@@ -37,7 +37,7 @@ namespace Paymentsense.Coding.Challenge.Api.Controllers
 
         [HttpGet]
         [Route("{name}")]
-        public async Task<ActionResult<string>> GetByName(string name)
+        public async Task<ActionResult> GetByName(string name)
         {
             var countryDetails = await _countriesService.GetCountryByName(name);            
 
