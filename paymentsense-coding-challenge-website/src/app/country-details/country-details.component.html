@@ -1,22 +1,39 @@
 <div class="details" *ngIf="countryDetails">
-    <img src={{countryDetails.flag}} height="100px"/>
-    <h2>{{ countryDetails.name }}</h2>
-    <h3>Population: {{ countryDetails.population }}</h3>
-    <h3>Capital: {{ countryDetails.capital }}</h3>
-    <h3>Timezones:
-            <li *ngFor="let timezone of countryDetails.timezones"> {{timezone}}</li>
-    </h3>
 
-    <h3>Languages:
-        <li *ngFor="let language of countryDetails.languages"> {{language.name}}</li>
-    </h3>
+    <dl>
+        <img src={{countryDetails.flag}} height="100px"/>
+        <h2>{{ countryDetails.name }}</h2>
+        <dt><p><strong>Population:</strong> {{ countryDetails.population }}</p></dt>
 
-    <h3>Currencies:
-        <li *ngFor="let currency of countryDetails.currencies"> {{currency.code}}</li>
-    </h3>
+        <dt><p><strong>Capital:</strong> {{ countryDetails.capital }}</p></dt>
 
-    <h3>Bordering countries:
-        <li *ngFor="let countryCode of countryDetails.borders"> {{countryCode}}</li>
-    </h3>
+        <dt><strong>Timezones:</strong></dt> 
+        <dd>
+            <ul>
+                <li *ngFor="let timezone of countryDetails.timezones"> {{timezone}}</li>
+            </ul>
+        </dd>
+
+        <dt><strong>Languages:</strong></dt>
+        <dd>
+            <ul>
+                <li *ngFor="let language of countryDetails.languages" > {{language.name}}</li>
+            </ul>
+        </dd>
+
+        <dt><strong>Currencies:</strong></dt>
+        <dd>
+            <ul>
+                <li *ngFor="let currency of countryDetails.currencies"> {{currency.code}}</li>
+            </ul>
+        </dd>
+
+        <dt><strong>Bordering countries:</strong></dt>
+        <dd>
+            <ul>
+                <li *ngFor="let countryCode of countryDetails.borders"> {{countryCode}}</li>
+            </ul>
+        </dd>
+    </dl>
 
 </div>
