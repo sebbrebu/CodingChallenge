@@ -1,0 +1,22 @@
+<div class="details" *ngIf="countryDetails">
+    <img src={{countryDetails.flag}} height="100px"/>
+    <h2>{{ countryDetails.name }}</h2>
+    <h3>Population: {{ countryDetails.population }}</h3>
+    <h3>Capital: {{ countryDetails.capital }}</h3>
+    <h3>Timezones:
+            <li *ngFor="let timezone of countryDetails.timezones"> {{timezone}}</li>
+    </h3>
+
+    <h3>Languages:
+        <li *ngFor="let language of countryDetails.languages"> {{language.name}}</li>
+    </h3>
+
+    <h3>Currencies:
+        <li *ngFor="let currency of countryDetails.currencies"> {{currency.code}}</li>
+    </h3>
+
+    <h3>Bordering countries:
+        <li *ngFor="let countryCode of countryDetails.borders"> {{countryCode}}</li>
+    </h3>
+
+</div>

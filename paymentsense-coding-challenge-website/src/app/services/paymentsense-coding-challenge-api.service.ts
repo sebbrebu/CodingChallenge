@@ -15,4 +15,8 @@ export class PaymentsenseCodingChallengeApiService {
   public getCountries(): Observable<Object> {
     return this.httpClient.get('https://localhost:5001/PaymentsenseCodingChallenge');
   }
+
+  public getCountryByName(name): Observable<Object> {    
+    return this.httpClient.get('https://localhost:5001/PaymentsenseCodingChallenge/' + name);
+  }
 }
