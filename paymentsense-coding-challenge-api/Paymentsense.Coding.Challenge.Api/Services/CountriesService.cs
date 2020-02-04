@@ -35,26 +35,25 @@ namespace Paymentsense.Coding.Challenge.Api.Services
 
             IEnumerable<Country> countries;
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_apiOptions.BaseAddress}{_apiOptions.AllCountriesPath}");
-
-            var client = _clientFactory.CreateClient();
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            using (var request = new HttpRequestMessage(HttpMethod.Get, $"{_apiOptions.BaseAddress}{_apiOptions.AllCountriesPath}"))
+            using (var client = _clientFactory.CreateClient())
+            using (var response = await client.SendAsync(request))
             {
-                var responseContent = await response.Content.ReadAsStringAsync(); 
-                countries = JsonConvert.DeserializeObject<IEnumerable<Country>>(responseContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    countries = JsonConvert.DeserializeObject<IEnumerable<Country>>(responseContent);
 
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
-                _cache.Set(CountriesCacheKey, countries, cacheEntryOptions);
-            }
-            else
-            {
-                countries = Array.Empty<Country>();
-            }
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
+                    _cache.Set(CountriesCacheKey, countries, cacheEntryOptions);
+                }
+                else
+                {
+                    countries = Array.Empty<Country>();
+                }
 
-            return countries;
+                return countries;
+            }
         }
 
         public async Task<CountryDetails> GetCountryByName(string name)
@@ -66,26 +65,25 @@ namespace Paymentsense.Coding.Challenge.Api.Services
 
             IEnumerable<CountryDetails> countryDetails;
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_apiOptions.BaseAddress}{_apiOptions.CountryNamePath}{name}?fullText=true");
+            using (var request = new HttpRequestMessage(HttpMethod.Get, $"{_apiOptions.BaseAddress}{_apiOptions.CountryNamePath}{name}?fullText=true"))
+            using (var client = _clientFactory.CreateClient())
+            using (var response = await client.SendAsync(request))
+            { 
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    countryDetails = JsonConvert.DeserializeObject<IEnumerable<CountryDetails>>(responseContent);
 
-            var client = _clientFactory.CreateClient();
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
+                    _cache.Set(name, countryDetails.FirstOrDefault(), cacheEntryOptions);
+                }
+                else
+                {
+                    countryDetails = Array.Empty<CountryDetails>();
+                }
 
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                countryDetails = JsonConvert.DeserializeObject<IEnumerable<CountryDetails>>(responseContent);
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
-                _cache.Set(name, countryDetails.FirstOrDefault(), cacheEntryOptions);
+                return countryDetails.FirstOrDefault();
             }
-            else
-            {
-                countryDetails = Array.Empty<CountryDetails>();
-            }
-
-            return countryDetails.FirstOrDefault();
         }
     }
 }
