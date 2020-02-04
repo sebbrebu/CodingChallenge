@@ -57,7 +57,12 @@ namespace Paymentsense.Coding.Challenge.Api.Services
         }
 
         public async Task<CountryDetails> GetCountryByName(string name)
-        {
+        {            
+            if (_cache.TryGetValue(name, out CountryDetails ccountry))
+            {
+                return ccountry;
+            }
+
             IEnumerable<CountryDetails> countryDetails;
 
             var request = new HttpRequestMessage(HttpMethod.Get, $"{CountryByNameEndpoint}{name}?fullText=true");
@@ -69,7 +74,10 @@ namespace Paymentsense.Coding.Challenge.Api.Services
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                countryDetails = JsonConvert.DeserializeObject<IEnumerable<CountryDetails>>(responseContent);               
+                countryDetails = JsonConvert.DeserializeObject<IEnumerable<CountryDetails>>(responseContent);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
+                _cache.Set(name, countryDetails.FirstOrDefault(), cacheEntryOptions);
             }
             else
             {
